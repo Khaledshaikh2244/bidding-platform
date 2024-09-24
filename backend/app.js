@@ -4,6 +4,7 @@ import { connection } from './database/conneciton.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import fileUpload from 'express-fileupload';
+import { errorMiddleware } from './middlewares/error.js';
 
 
 const app = express();
@@ -26,5 +27,7 @@ config({
         tempFileDir : "/temp/",
     }))
 
-connection()
+connection();
+
+app.use(errorMiddleware );
 export default app;
