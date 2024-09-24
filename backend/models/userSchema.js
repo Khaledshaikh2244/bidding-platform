@@ -16,10 +16,13 @@ const userSchema = ({
         maxLenght : [32, "password must more than 40 characters"]
     },
 
+    email : Srting,
+    address: Srting,
+
     phone : {
         type : srting ,
-        minLenght : [10, "phone  must contains  10 characters"],
-        maxLenght : [10, "phone  must contains  10 characters"]
+        minLenght : [10, "phone number must contains  10 characters"],
+        maxLenght : [10, "phone number must contains  10 characters"]
     },
 
     profileImage :{
@@ -35,19 +38,23 @@ const userSchema = ({
     },
 
     paymentMethod : {
-      bankAccountNumber  : String,
-      bankAccountScheme :  String, 
-      bankName : String,
-    },
-
-    razorpay : {
+      bankTransfer : {
+        bankAccountNumber  : String,
+        bankAccountName :  String, 
+        bankName : String,
+      },
+       
+      razorpay : {
         razorPayAccountNumber : Number,     
     },
 
     paypal : {
-        type : String,  
+        paypalEmail : String,  
     },
 
+    },
+
+    
 
     role : {
         type :String,
@@ -67,5 +74,12 @@ const userSchema = ({
     moneySpent : {
         type : Number,
         default : Date.now,
-    }
+    },
+    createdAt : {
+        type : Date,
+        default :Date.now,
+    },
 })
+
+
+export const User = mongoose.model("User",userSchema );
