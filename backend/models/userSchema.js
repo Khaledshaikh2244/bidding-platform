@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema ({
           message: 'Phone number must be 10 digits'
         }
       },
-      
+
 // this will be from cloudinary
     profileImage :{
         public_id : {
@@ -101,7 +101,7 @@ userSchema.pre('save',async function (next) {
     this.password = await bcrypt.hash(this.password,10);
 });
 
-userSchema.methods.comaprePassword = async function (enteredPassword) {
+userSchema.methods.comparePassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword,this.password);
 }
 
