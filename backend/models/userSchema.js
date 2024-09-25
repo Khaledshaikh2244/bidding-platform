@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-const userSchema = ({
+const userSchema = new mongoose.Schema ({
     userName :  {
         type : String,
         minLenght : [3, "Username must contains atleast 3 characters"],
@@ -31,7 +31,7 @@ const userSchema = ({
             require  : true,
         },
 
-        ulr : {
+        url : {
             type : String,
             require : true,
         },
@@ -81,5 +81,20 @@ const userSchema = ({
     },
 })
 
+userSchema.pre('save',async function (next) {
+    if(!this.isModified("password")){
+        next();
+    }
 
+    this.password = await bcrypt.hash(this.password,10);
+});
+
+userSchema.methods.comaprePassword = async function (enteredPassword) {
+    return await bcrypt.compare(enteredPassword,this.password);
+}
+userSchema.methods.generateJsonWebToken = function(){
+    return jwt.sign({id : this_id},process.env.JWT_SECRET,{
+        expiresIn :process.env.JWT_EXPIRE
+    })
+}
 export const User = mongoose.model("User",userSchema );
