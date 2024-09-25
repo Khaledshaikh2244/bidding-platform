@@ -1,7 +1,7 @@
-import ErrorHandler from "../middlewares/error";
+import ErrorHandler from "../middlewares/error.js";
 import {v2 as cloudinary} from 'cloudinary';
-import { User } from "../models/userSchema";
-export const register =async (req,res,next) => {
+import { User } from "../models/userSchema.js";
+export const register = async (req,res,next) => {
     if(!req.files || Object.keys(req.files).length === 0){
         return next(new ErrorHandler("Profile Image Required", 401));
     }
@@ -21,7 +21,7 @@ export const register =async (req,res,next) => {
      phone,
      address,
      role,
-     bankAccountNumber,
+     bankAccountNumber, 
      bankAccountName,
      bankName,
      razorPayAccountNumber,
@@ -55,6 +55,8 @@ export const register =async (req,res,next) => {
   const cloudinaryResponse = await cloudinary.uploader.upload(profileImage.tempFilePath,{
     folder : "MERN_BIDDING_PLATFORM_USERS",
   })
+
+  console.log(cloudinaryResponse);
   if(!cloudinaryResponse || cloudinaryResponse.error){
     console.error("Cloudinary error", cloudinaryResponse.error || "Unknown cloudinary error");
     return next(new ErrorHandler("Failed to upload profile image to cloudinary",500));
@@ -80,8 +82,7 @@ export const register =async (req,res,next) => {
 
   res.status(200).json({
     success : true,
-    message  : "User Registered",
-    
+    message  : "User Registered",user
   })
 
 }
