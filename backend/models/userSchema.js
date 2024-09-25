@@ -5,25 +5,37 @@ import jwt from 'jsonwebtoken';
 const userSchema = new mongoose.Schema ({
     userName :  {
         type : String,
-        minLenght : [3, "Username must contains atleast 3 characters"],
-        maxLenght : [40, "Username must more than 40 characters"],
+        minLength : [3, "Username must contains atleast 3 characters"],
+        maxLength : [40, "Username must more than 40 characters"],
     },
 
     password : {
         type : String ,
         selected :  false,
-        minLenght : [8, "password must contains atleast 3 characters"],
-        maxLenght : [32, "password must more than 40 characters"]
+        minLength : [8, "password must contains atleast 8 characters"],
+        maxLength : [32, "password must more than 40 characters"]
     },
 
     email : String,
     address: String,
 
-    phone : {
-        type : String ,
-        minLenght : [10, "phone number must contains  10 characters"],
-        maxLenght : [10, "phone number must contains  10 characters"]
-    },
+    // phone : {
+    //     type : Number,
+    //     require : true,
+    //     minLength : [10, "phone number must contains  10 characters"],
+    //     maxLength : [10, "phone number must contains  10 characters"]
+    // },
+    phone: {
+        type: String,
+        required: true,
+        validate: {
+          validator: function(v) {
+            return /^\d+$/.test(v) && v.length === 10;
+          },
+          message: 'Phone number must be 10 digits'
+        }
+      },
+      
 // this will be from cloudinary
     profileImage :{
         public_id : {
@@ -73,7 +85,7 @@ const userSchema = new mongoose.Schema ({
 
     moneySpent : {
         type : Number,
-        default : Date.now,
+        default : 0,
     },
     createdAt : {
         type : Date,
@@ -92,8 +104,9 @@ userSchema.pre('save',async function (next) {
 userSchema.methods.comaprePassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword,this.password);
 }
-userSchema.methods.generateJsonWebToken = function(){
-    return jwt.sign({id : this_id},process.env.JWT_SECRET,{
+
+ userSchema.methods.generateJsonWebToken = function(){
+    return   jwt.sign({id : this._id},process.env.JWT_SECRET,{
         expiresIn :process.env.JWT_EXPIRE
     })
 }
