@@ -3,6 +3,8 @@ import {v2 as cloudinary} from 'cloudinary';
 import { User } from "../models/userSchema.js";
 import { catchAsynchError } from "../middlewares/catchAsyncError.js";
 import { generateToken } from "../utils/jwtToken.js";
+
+
  const register = async (req,res,next) => {
     if(!req.files || Object.keys(req.files).length === 0){
         return next(new ErrorHandler("Profile Image Required", 401));
@@ -92,4 +94,35 @@ import { generateToken } from "../utils/jwtToken.js";
 
 }
 export const registerController = catchAsynchError(register);
+
+
+const login = async (req,res,next) => {
+  const {email,password} =  req.body;
+
+  if(!email,!password){
+    return next(new ErrorHandler("please fill full form "));
+  }
+
+  const user = await User.findOne({email}).select("+password");
+  if(!user){
+    return next(new ErrorHandler("Inavlid credentials",400)); 
+  }
+  // via userSchema
+  const isvalidPassword= await user.comparePassword(password);
+  if(!isvalidPassword){
+  return next(new ErrorHandler("Wrong password ",401));
+  }
+
+  generateToken(user, "Login Successfully",200,res);  
+}; 
+export const loginController = catchAsynchError(login);
+
+const getProfile = async (req,res,next) => {};
+export const getProfileController = catchAsynchError(getProfile);
+
+const logout = async (req,res,next) => {};
+export const logoutController = catchAsynchError(logout);
+
+const fetchLeaderBoard = async (req,res,next) => {};
+export const leaderboardController = catchAsynchError(fetchLeaderBoard);
 
