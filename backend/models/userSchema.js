@@ -10,21 +10,21 @@ const userSchema = ({
     },
 
     password : {
-        type : srting ,
+        type : String ,
         selected :  false,
         minLenght : [8, "password must contains atleast 3 characters"],
         maxLenght : [32, "password must more than 40 characters"]
     },
 
-    email : Srting,
-    address: Srting,
+    email : String,
+    address: String,
 
     phone : {
-        type : srting ,
+        type : String ,
         minLenght : [10, "phone number must contains  10 characters"],
         maxLenght : [10, "phone number must contains  10 characters"]
     },
-
+// this will be from cloudinary
     profileImage :{
         public_id : {
             type : String , 
@@ -62,12 +62,12 @@ const userSchema = ({
     },
 
     unpaidCommision : {
-        type : Srting,
+        type : String,
         default : 0,
     },
 
     auctionWon :{
-        type : Srting,
+        type : String,
         default : 0,
     },
 
