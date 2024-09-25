@@ -117,7 +117,13 @@ const login = async (req,res,next) => {
 }; 
 export const loginController = catchAsynchError(login);
 
-const getProfile = async (req,res,next) => {};
+const getProfile = async (req,res,next) => {
+  const user = req.body;
+  res.status(200).json({
+    success : true,
+    user,
+  })
+};
 export const getProfileController = catchAsynchError(getProfile);
 
 const logout = async (req,res,next) => {};
