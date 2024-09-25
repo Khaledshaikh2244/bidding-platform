@@ -2,6 +2,7 @@ import ErrorHandler from "../middlewares/error.js";
 import {v2 as cloudinary} from 'cloudinary';
 import { User } from "../models/userSchema.js";
 import { catchAsynchError } from "../middlewares/catchAsyncError.js";
+import { generateToken } from "../utils/jwtToken.js";
  const register = async (req,res,next) => {
     if(!req.files || Object.keys(req.files).length === 0){
         return next(new ErrorHandler("Profile Image Required", 401));
@@ -81,10 +82,13 @@ import { catchAsynchError } from "../middlewares/catchAsyncError.js";
       },
   })
 
-  res.status(200).json({
-    success : true,
-    message  : "User Registered",user
-  })
+// accesing user from above
+  generateToken(user,"User Registered",201,res)
+
+  // res.status(200).json({
+  //   success : true,
+  //   message  : "User Registered",user
+  // })
 
 }
 export const registerController = catchAsynchError(register);
