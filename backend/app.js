@@ -6,11 +6,15 @@ import cookieParser from 'cookie-parser';
 import fileUpload from 'express-fileupload';
 import { errorMiddleware } from './middlewares/error.js';
 import userRouter from  "./routes/userRoutes.js";
+import { fileURLToPath } from 'url';
+import {dirname, join} from 'path';
+config({
+    path : "./config/config.env"    
+})
 
 const app = express();
-config({
-    path : "./config/config.env"
-})
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 
     app.use(cors({
@@ -25,7 +29,7 @@ config({
     app.use(
         fileUpload({
         useTempFiles : true,
-        tempFileDir : "/temp/",
+        tempFileDir : join(__dirname, "temp"),
     })
 )
 
