@@ -96,6 +96,7 @@ import { generateToken } from "../utils/jwtToken.js";
 export const registerController = catchAsynchError(register);
 
 
+
 const login = async (req,res,next) => {
   const {email,password} =  req.body;
 
@@ -117,6 +118,9 @@ const login = async (req,res,next) => {
 }; 
 export const loginController = catchAsynchError(login);
 
+
+
+
 const getProfile = async (req,res,next) => {
   const user = req.user;
   res.status(200).json({
@@ -126,8 +130,22 @@ const getProfile = async (req,res,next) => {
 };
 export const getProfileController = catchAsynchError(getProfile);
 
-const logout = async (req,res,next) => {};
+
+
+
+const logout = async (req,res,next) => {
+    res.status(200).cookie("token","",{
+      expires: new Date(Date.now()),
+      httpOnly : true,
+    }).json({
+      success : true,
+      message : "Logout Successfully"
+    })
+};
 export const logoutController = catchAsynchError(logout);
+
+
+
 
 const fetchLeaderBoard = async (req,res,next) => {};
 export const leaderboardController = catchAsynchError(fetchLeaderBoard);
