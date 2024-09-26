@@ -118,7 +118,7 @@ const login = async (req,res,next) => {
 export const loginController = catchAsynchError(login);
 
 const getProfile = async (req,res,next) => {
-  const user = req.body;
+  const user = req.user;
   res.status(200).json({
     success : true,
     user,
