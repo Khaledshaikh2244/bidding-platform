@@ -90,3 +90,46 @@ const addNewAuctionItem =  ( async (req, res, next) => {
 })
 
 export const auctionController =  catchAsynchError(addNewAuctionItem);
+
+
+const getAllItems = (async (req,res,next)=> {
+  let allitems = await Auction.find();
+  res.status(201).json({
+    success: true,
+    allitems,
+    message : "all items are listed",
+  })
+}) 
+
+export const getAllItemsController = catchAsynchError(getAllItems);
+
+
+const getMyAuctionItems = () => {
+  
+}
+
+export const getMyAuctionitemsController = catchAsynchError(getMyAuctionItems);
+
+
+
+
+const getAuctionDetails = () => {
+  
+}
+
+export const getAuctionDetailsController = catchAsynchError(getAuctionDetails);
+
+
+const removeFromAuction = () => {
+  
+}
+
+export const removeFromAuctionController = catchAsynchError(removeFromAuction);
+
+
+
+const republishItems = () => {
+  
+}
+
+export const republishItemsController = catchAsynchError(republishItems);
