@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import fileUpload from 'express-fileupload';
 import { errorMiddleware } from './middlewares/error.js';
 import userRouter from  "./routes/userRoutes.js";
+import auctionRouter from "./routes/aucitonRoutes.js"
 import { fileURLToPath } from 'url';
 import {dirname, join} from 'path';
 config({
@@ -34,6 +35,7 @@ const __dirname = dirname(__filename);
 )
 
     app.use("/api/v1/user", userRouter);
+    app.use("/api/v1/auctionitem",auctionRouter);
 
 connection();
 
