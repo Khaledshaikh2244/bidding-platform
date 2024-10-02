@@ -26,3 +26,16 @@ const isAuthenticated = async (req,res,next) => {
 }
 
 export const authMiddleware = catchAsynchError(isAuthenticated);
+
+
+export const authorizedMidleware = (...roles) => {
+    return (req,res,next) => {
+        if(!roles.includes(req.user.role)){
+            return next(new ErrorHandler(`${req.user.role} is not allowd to access this resource` ,403));
+        }
+        next();
+    }
+   
+}
+
+// export const authorizedMidleware =  catchAsynchError(isAuthorized);
