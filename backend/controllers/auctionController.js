@@ -79,7 +79,7 @@ const addNewAuctionItem =  ( async (req, res, next) => {
     });
     // console.log(`this is from auctionContrller: ${createdBy}`)
     console.log(auctionItem)
-    return res.status(500).json({
+    return res.status(201).json({
         meassage : `Auction is created and will be liste on ${startTime}`,
         auctionItem,
     });
