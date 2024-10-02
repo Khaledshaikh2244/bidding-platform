@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const autionSchema  = new mongoose.Schema({
     title : String,
     description : String,
-    starttingBid : Number,
+    startingBid : Number,
     category :  String,
 
     auctionStatus : {
@@ -63,4 +63,4 @@ const autionSchema  = new mongoose.Schema({
     },
 });
 
-export const Auction = mongoose.model("Auction", autionSchema);
+export const  Auction = mongoose.model("Auction", autionSchema);
