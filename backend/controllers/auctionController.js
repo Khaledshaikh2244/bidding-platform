@@ -57,7 +57,7 @@ const addNewAuctionItem =  ( async (req, res, next) => {
         }
     );
 
-    console.log("this is cld :",cloudinaryResponse);
+    // console.log("this is cld :",cloudinaryResponse);
     if(!cloudinaryResponse || cloudinaryResponse.error){
         console.error("Cloudinary error:"),
         cloudinaryResponse.error || "Unknown cloudinary error."
@@ -78,7 +78,7 @@ const addNewAuctionItem =  ( async (req, res, next) => {
         createdBy : req.user._id,
     });
     // console.log(`this is from auctionContrller: ${createdBy}`)
-    console.log(auctionItem)
+    // console.log(auctionItem)
     return res.status(201).json({
         meassage : `Auction is created and will be liste on ${startTime}`,
         auctionItem,
