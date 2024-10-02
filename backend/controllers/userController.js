@@ -9,15 +9,22 @@ import { generateToken } from "../utils/jwtToken.js";
     if(!req.files || Object.keys(req.files).length === 0){
         return next(new ErrorHandler("Profile Image Required", 401));
     }
-
+    if (Object.keys(req.files).length > 1) {
+  return next(new ErrorHandler("Please upload only one file", 401));
+}
  const {profileImage} = req.files;
 
  const allowedFormats = ["image/png","image/jpeg","image/webp"];
-// 
+ const maxSize = 5 * 1024 * 1024;
+
  if(!allowedFormats.includes(profileImage.mimetype)){
     return next(new ErrorHandler("Files format not supported",400));
  }
- 
+
+ if(profileImage.size > maxSize){
+    return next(new ErrorHandler("File exceeds size limit"));
+ }
+
  const {
      userName,
      email,
