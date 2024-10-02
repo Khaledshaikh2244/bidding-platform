@@ -104,18 +104,49 @@ const getAllItems = (async (req,res,next)=> {
 export const getAllItemsController = catchAsynchError(getAllItems);
 
 
-const getMyAuctionItems = () => {
+const getMyAuctionItems = (async (req,res,next) => {
+  const items = await Auction.find({createdBy : req.user._id});
   
-}
+  if(!items || items.length === 0){
+    return next(new ErrorHandler("No auctions found",404));
+  }
+  res.status(200).json({
+    success : true,
+    items,
+    message: "fetch successfully",
+  })
+})
 
 export const getMyAuctionitemsController = catchAsynchError(getMyAuctionItems);
 
 
 
 
-const getAuctionDetails = () => {
-  
-}
+const getAuctionDetails = (async(req,res,next) => {
+  const {id} = req.params;
+
+  if (!id || id.trim() === "") {
+    return next(new ErrorHandler("ID should not be empty", 400));
+  }
+
+  if(!mongoose.Types.ObjectId.isValid(id)){
+    return next(new ErrorHandler("Invalid id format",400));
+  }
+
+  const auctionItems = await Auction.findById(id);
+
+  if(!auctionItems){
+    return next(new ErrorHandler("Auction not found",404));
+  }
+  const bidders = auctionItems.bids.sort((a,b) => b.bid - a.bid)
+
+  res.status(200).json({
+    success :true,
+    auctionItems,
+    bidders,
+    message : "fetch auction details  successfully",
+  });
+})
 
 export const getAuctionDetailsController = catchAsynchError(getAuctionDetails);
 
