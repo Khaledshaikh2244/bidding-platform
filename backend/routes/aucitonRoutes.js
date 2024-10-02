@@ -14,7 +14,7 @@ router.get("/auction/:id",authMiddleware,getAuctionDetailsController);
 
 router.get("/myitems",authMiddleware, authorizedMidleware("Auctioneer"),getMyAuctionitemsController) 
 
-router.delete("delete/:id",authMiddleware, authorizedMidleware("Auctioneer"),removeFromAuctionController);
+router.delete("/delete/:id",authMiddleware, authorizedMidleware("Auctioneer"),removeFromAuctionController);
 
 router.put("/item/republish/:id",authMiddleware, authorizedMidleware("Auctioneer"),republishItemsController)
 
