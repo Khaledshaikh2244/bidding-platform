@@ -3,6 +3,7 @@ import { catchAsynchError } from '../middlewares/catchAsyncError.js';
 import ErrorHandler from '../middlewares/error.js'
 import { User } from '../models/userSchema.js';
 import {v2 as cloudinary} from 'cloudinary';
+import mongoose from 'mongoose';
 
 const addNewAuctionItem =  ( async (req, res, next) => {
     if (!req.files || Object.keys(req.files).length === 0) {
@@ -151,9 +152,36 @@ const getAuctionDetails = (async(req,res,next) => {
 export const getAuctionDetailsController = catchAsynchError(getAuctionDetails);
 
 
-const removeFromAuction = () => {
+const removeFromAuction = ( async (req,res,next) => {
   
-}
+  const { id } = req.params;
+
+  console.log("this is id",id)
+  if (!id || id.trim() === "") {
+    return next(new ErrorHandler("ID should not be empty", 400));
+  }
+
+  if(!mongoose.Types.ObjectId.isValid(id)){
+    return next(new ErrorHandler("Invalid id format",400));
+  }
+
+  const auction = await Auction.findOneAndDelete({ _id: id, createdBy: req.user._id });
+
+  if (!auction) {
+    return next(new ErrorHandler("Auction not found or you are not authorized to delete", 404));
+  }
+  // const auctionitem = await Auction.findById(id);
+  // if(!auctionitem) {
+  //   return next(new ErrorHandler("Auction not found",404));
+  // }
+
+  // await auctionitem.deleteOne();
+  
+  res.status(200).json({
+    success : true,
+    message : "Auction item deleted successfully",
+  })
+})
 
 export const removeFromAuctionController = catchAsynchError(removeFromAuction);
 
